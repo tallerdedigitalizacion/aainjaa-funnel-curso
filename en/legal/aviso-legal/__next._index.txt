@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[7121,[],""]
+3:I[4581,[],""]
+4:I[8500,["500","static/chunks/500-c99b8dfd3de17c86.js","285","static/chunks/app/%5Blocale%5D/legal/%5Bslug%5D/page-0a6312cdf2ed0b92.js"],""]
+5:I[3188,["177","static/chunks/app/layout-60841c823e35dc4b.js"],"TrackingScripts"]
+:HL["/aainjaa-funnel-curso/_next/static/css/709b1f4f07f79162.css","style"]
+0:{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/aainjaa-funnel-curso/_next/static/css/709b1f4f07f79162.css","precedence":"next"}]],["$","html",null,{"lang":"es","suppressHydrationWarning":true,"children":["$","body",null,{"className":"antialiased","children":[["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}],"notFound":[["$","main",null,{"className":"flex min-h-screen items-center justify-center bg-black px-6 text-center text-white","children":["$","div",null,{"children":[["$","p",null,{"className":"font-display text-7xl uppercase tracking-[0.14em] text-red-500","children":"404"}],["$","h1",null,{"className":"mt-4 font-display text-5xl uppercase","children":"Route not found"}],["$","p",null,{"className":"mt-4 text-white/65","children":"The requested page does not exist in this build."}],["$","$L4",null,{"href":"/es","className":"mt-8 inline-flex rounded-full bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white","children":"Go home"}]]}]}],[]]}],["$","$L5",null,{}]]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"FMQgmyUB-LG1UT6gjj5ZC"}

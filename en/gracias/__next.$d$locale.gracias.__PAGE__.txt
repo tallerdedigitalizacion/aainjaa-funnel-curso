@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[8500,["500","static/chunks/500-c99b8dfd3de17c86.js","902","static/chunks/app/%5Blocale%5D/gracias/page-0a6312cdf2ed0b92.js"],""]
+3:I[484,[],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","section",null,{"className":"mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex min-h-[70vh] items-center py-20","children":["$","div",null,{"className":"max-w-3xl rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-8 sm:p-12","children":[["$","p",null,{"className":"text-sm uppercase tracking-[0.35em] text-red-400","children":"Gracias"}],["$","h1",null,{"className":"mt-5 font-display text-6xl uppercase leading-none text-white","children":"Thank you for your order"}],["$","p",null,{"className":"mt-5 max-w-2xl text-lg leading-8 text-white/72","children":"Your request is now inside the flow. This space is ready to show confirmation, a reference code, or next steps depending on the backend."}],["$","$L2",null,{"href":"/en","className":"mt-8 inline-flex rounded-full bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-red-500","children":"Back to home"}]]}]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"FMQgmyUB-LG1UT6gjj5ZC"}
+5:null

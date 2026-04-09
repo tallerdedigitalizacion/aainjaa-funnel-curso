@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://tallerdedigitalizacion.github.io/aainjaa-funnel-curso
+Sitemap: https://tallerdedigitalizacion.github.io/aainjaa-funnel-curso/sitemap.xml
