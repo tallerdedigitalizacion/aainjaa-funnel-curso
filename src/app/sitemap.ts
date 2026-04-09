@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { locales, siteConfig } from "@/config/site";
 
+export const dynamic = "force-static";
+
 const paths = [
   "",
   "/gracias",

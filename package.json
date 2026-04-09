@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "NEXT_PUBLIC_SITE_URL=https://tallerdedigitalizacion.github.io/aainjaa-funnel-curso NEXT_PUBLIC_BASE_PATH=/aainjaa-funnel-curso next build --webpack",
     "start": "next start",
     "lint": "eslint ."
   },

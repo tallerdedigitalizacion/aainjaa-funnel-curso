@@ -12,6 +12,12 @@ const legalMap = {
   cookies: "cookies",
 } as const;
 
+export function generateStaticParams() {
+  return ["es", "en"].flatMap((locale) =>
+    Object.keys(legalMap).map((slug) => ({ locale, slug })),
+  );
+}
+
 export async function generateMetadata({
   params,
 }: {

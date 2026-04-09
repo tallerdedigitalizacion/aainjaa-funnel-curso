@@ -1,21 +1,9 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Space_Grotesk } from "next/font/google";
 
 import "@/app/globals.css";
 import { TrackingScripts } from "@/components/tracking-scripts";
 import { siteConfig } from "@/config/site";
 import { absoluteUrl } from "@/lib/utils";
-
-const bebas = Bebas_Neue({
-  subsets: ["latin"],
-  variable: "--font-bebas",
-  weight: "400",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -31,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${bebas.variable} ${spaceGrotesk.variable} antialiased`}>
+      <body className="antialiased">
         {children}
         <TrackingScripts />
       </body>

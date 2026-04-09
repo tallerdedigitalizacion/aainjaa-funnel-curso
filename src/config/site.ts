@@ -7,6 +7,7 @@ export const siteConfig = {
   brand: "AAINJAA",
   founder: "Homero Cortes",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://aainjaa.example.com",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   supportEmail: "hola@aainjaa.com",
   socialImagePath: "/social-image.jpg",
   teaserAnchor: "highlights",
