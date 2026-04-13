@@ -1,10 +1,15 @@
-import type { LanguageOption, PaymentMethod, SelectedPack } from "@/types/purchase";
+import type {
+  CurrencyOption,
+  LanguageOption,
+  PaymentMethod,
+  SelectedPack,
+} from "@/types/purchase";
 
 export interface LocalizedPack {
   id: SelectedPack;
   name: string;
-  price: string;
-  currency: "EUR" | "USD";
+  defaultCurrency: CurrencyOption;
+  prices: Partial<Record<CurrencyOption, number>>;
   badge?: string;
   recommended?: boolean;
   shippingRequired?: boolean;
@@ -24,8 +29,8 @@ interface PackTranslation {
 interface BasePackConfig {
   id: SelectedPack;
   name: string;
-  price: string;
-  currency: "EUR" | "USD";
+  defaultCurrency: CurrencyOption;
+  prices: Partial<Record<CurrencyOption, number>>;
   recommended?: boolean;
   shippingRequired?: boolean;
   paymentLinks: Partial<Record<PaymentMethod, string>>;
@@ -36,31 +41,31 @@ const packDefinitions: BasePackConfig[] = [
   {
     id: "basic",
     name: "Basic",
-    price: "49",
-    currency: "EUR",
+    defaultCurrency: "EUR",
+    prices: {
+      EUR: 9.99,
+    },
     paymentLinks: {
       stripe: process.env.NEXT_PUBLIC_STRIPE_BASIC_URL || "",
       manual: "",
     },
     translations: {
       es: {
-        summary: "Entrada directa al material esencial para aprender y tocar con claridad.",
+        summary: "Acceso al contenido base para aprender la pieza con claridad.",
         ctaLabel: "Elegir Basic",
         features: [
-          "Video principal paso a paso",
-          "Desglose por instrumentos",
-          "Version lenta para practicar",
-          "Acceso digital privado tras validacion de pago",
+          "Acceso al contenido esencial",
+          "Una entrada clara y directa al material base",
+          "Pensado para empezar sin friccion",
         ],
       },
       en: {
-        summary: "Straight access to the essential material for learning and playing with clarity.",
+        summary: "Access to the core content for learning the piece with clarity.",
         ctaLabel: "Choose Basic",
         features: [
-          "Main step-by-step video",
-          "Instrument-by-instrument breakdown",
-          "Slow practice version",
-          "Private digital access after payment verification",
+          "Access to the essential content",
+          "A clear and direct entry to the core material",
+          "Designed for getting started with low friction",
         ],
       },
     },
@@ -68,8 +73,10 @@ const packDefinitions: BasePackConfig[] = [
   {
     id: "premium",
     name: "Premium",
-    price: "89",
-    currency: "EUR",
+    defaultCurrency: "EUR",
+    prices: {
+      EUR: 19.99,
+    },
     recommended: true,
     paymentLinks: {
       stripe: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_URL || "",
@@ -77,25 +84,23 @@ const packDefinitions: BasePackConfig[] = [
     },
     translations: {
       es: {
-        summary: "La opcion recomendada para avanzar mas rapido con recursos extra y mejor contexto.",
+        summary: "La opcion recomendada: version guiada, mejor estructura y recursos extra.",
         ctaLabel: "Elegir Premium",
         badge: "Recomendado",
         features: [
-          "Todo lo del pack Basic",
-          "Partituras PDF editables",
-          "Bonus de estudio y enfoque musical",
-          "Prioridad en confirmacion de acceso",
+          "Version guiada para avanzar con mejor estructura",
+          "Recursos extra para estudiar con mas contexto",
+          "La opcion mas equilibrada para la mayoria",
         ],
       },
       en: {
-        summary: "The recommended option for moving faster with extra resources and stronger context.",
+        summary: "The recommended option: guided version, better structure, and extra resources.",
         ctaLabel: "Choose Premium",
         badge: "Recommended",
         features: [
-          "Everything in Basic",
-          "Editable PDF scores",
-          "Study bonus and musical focus resources",
-          "Priority access confirmation",
+          "Guided version for a clearer progression",
+          "Extra resources for stronger study context",
+          "The most balanced option for most buyers",
         ],
       },
     },
@@ -103,32 +108,31 @@ const packDefinitions: BasePackConfig[] = [
   {
     id: "pro",
     name: "Pro",
-    price: "149",
-    currency: "EUR",
-    shippingRequired: true,
+    defaultCurrency: "EUR",
+    prices: {
+      EUR: 39.99,
+    },
     paymentLinks: {
       stripe: process.env.NEXT_PUBLIC_STRIPE_PRO_URL || "",
       manual: "",
     },
     translations: {
       es: {
-        summary: "Pensado para quienes quieren la experiencia mas completa y soporte ampliado.",
+        summary: "La experiencia mas completa, con acceso ampliado y valor adicional.",
         ctaLabel: "Elegir Pro",
         features: [
-          "Todo lo del pack Premium",
-          "Material fisico opcional sujeto a disponibilidad",
-          "Indicaciones extra de montaje o interpretacion",
-          "Seguimiento manual con codigo de pedido",
+          "Acceso ampliado para una experiencia mas completa",
+          "Valor adicional para quien quiere ir mas alla",
+          "Pensado para quienes buscan la opcion mas alta",
         ],
       },
       en: {
-        summary: "Built for people who want the fullest experience and expanded support.",
+        summary: "The fullest experience, with expanded access and added value.",
         ctaLabel: "Choose Pro",
         features: [
-          "Everything in Premium",
-          "Optional physical material subject to availability",
-          "Extra setup or interpretation guidance",
-          "Manual follow-up with request code",
+          "Expanded access for the fullest experience",
+          "Added value for buyers who want more depth",
+          "Built for people choosing the highest tier",
         ],
       },
     },
@@ -141,8 +145,8 @@ export function getLocalizedPacks(locale: LanguageOption): LocalizedPack[] {
     return {
       id: pack.id,
       name: pack.name,
-      price: pack.price,
-      currency: pack.currency,
+      defaultCurrency: pack.defaultCurrency,
+      prices: pack.prices,
       recommended: pack.recommended,
       shippingRequired: pack.shippingRequired,
       paymentLinks: pack.paymentLinks,
@@ -152,4 +156,36 @@ export function getLocalizedPacks(locale: LanguageOption): LocalizedPack[] {
       features: translation.features,
     };
   });
+}
+
+function getCurrencyLocale(locale: LanguageOption) {
+  return locale === "es" ? "es-ES" : "en-US";
+}
+
+export function getPackPrice(
+  pack: Pick<LocalizedPack, "prices" | "defaultCurrency">,
+  currency: CurrencyOption,
+) {
+  const amount = pack.prices[currency] ?? pack.prices[pack.defaultCurrency] ?? 0;
+  const resolvedCurrency = pack.prices[currency] ? currency : pack.defaultCurrency;
+
+  return {
+    amount,
+    currency: resolvedCurrency,
+  };
+}
+
+export function formatPackPrice(
+  pack: Pick<LocalizedPack, "prices" | "defaultCurrency">,
+  currency: CurrencyOption,
+  locale: LanguageOption,
+) {
+  const resolved = getPackPrice(pack, currency);
+
+  return new Intl.NumberFormat(getCurrencyLocale(locale), {
+    style: "currency",
+    currency: resolved.currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(resolved.amount);
 }

@@ -1,11 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import type { FormEvent, ReactNode } from "react";
 import { useState } from "react";
 
 import { formConfig } from "@/config/forms";
-import { getLocalizedPacks } from "@/config/packs";
+import { formatPackPrice, getLocalizedPacks, getPackPrice } from "@/config/packs";
 import { trackingConfig } from "@/config/tracking";
 import { submitPurchaseRequest } from "@/lib/forms";
 import { trackEvent } from "@/lib/tracking";
@@ -58,7 +57,6 @@ const emptyShipping: ShippingAddress = {
 
 export function OrderForm({ locale, copy }: OrderFormProps) {
   const packs = getLocalizedPacks(locale);
-  const router = useRouter();
   const [state, setState] = useState<FormSubmissionState>("idle");
   const [globalError, setGlobalError] = useState("");
   const [result, setResult] = useState<PurchaseRequestResponse | null>(null);
@@ -82,6 +80,10 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
 
   const selectedPack = packs.find((pack) => pack.id === values.selectedPack) ?? packs[0];
   const requiresShipping = Boolean(selectedPack.shippingRequired);
+  const packSelectionCopy =
+    locale === "es"
+      ? { selected: "Seleccionado", action: "Seleccionar" }
+      : { selected: "Selected", action: "Select" };
 
   function getTrackingConsentState(): TrackingConsentState {
     if (typeof window === "undefined") return "rejected";
@@ -327,41 +329,81 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
         />
       </div>
 
-      <div className="mt-6 grid gap-4">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/65">
+      <fieldset className="mt-6 grid gap-4">
+        <legend className="text-sm font-semibold uppercase tracking-[0.22em] text-white/65">
           {copy.labels.selectedPack}
-        </p>
+        </legend>
         <div className="grid gap-3 md:grid-cols-3">
           {packs.map((pack) => (
-            <button
-              key={pack.id}
-              type="button"
-              onClick={() => {
-                updateValue("selectedPack", pack.id);
-                trackEvent({ event: "pack_select", locale, pack: pack.id });
-              }}
-              className={cn(
-                "rounded-[1.5rem] border p-4 text-left transition",
-                values.selectedPack === pack.id
-                  ? "border-red-500 bg-red-600/15"
-                  : "border-white/10 bg-black/30 hover:border-white/25",
-              )}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-display text-2xl uppercase tracking-[0.1em] text-white">
-                    {pack.name}
-                  </p>
-                  <p className="mt-1 text-sm text-white/70">{pack.summary}</p>
+            <label key={pack.id} className="block cursor-pointer">
+              <input
+                type="radio"
+                name="selectedPack"
+                value={pack.id}
+                checked={values.selectedPack === pack.id}
+                onChange={() => {
+                  updateValue("selectedPack", pack.id);
+                  trackEvent({ event: "pack_select", locale, pack: pack.id });
+                }}
+                className="peer sr-only"
+              />
+              <div
+                className={cn(
+                  "relative h-full rounded-[1.5rem] border p-4 text-left transition duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-red-400/80 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-black",
+                  values.selectedPack === pack.id
+                    ? "border-red-500 bg-red-600/15 shadow-[0_0_40px_rgba(220,38,38,0.18)]"
+                    : pack.recommended
+                      ? "border-red-500/40 bg-red-500/8 hover:border-red-400/70"
+                      : "border-white/10 bg-black/30 hover:border-white/25",
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    {pack.badge ? (
+                      <span className="inline-flex rounded-full border border-red-400/40 bg-red-500/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-red-100">
+                        {pack.badge}
+                      </span>
+                    ) : null}
+                    <p className="mt-3 font-display text-2xl uppercase tracking-[0.1em] text-white">
+                      {pack.name}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-white/72">{pack.summary}</p>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className="text-3xl font-semibold leading-none text-white">
+                      {formatPackPrice(pack, values.currency, locale)}
+                    </p>
+                    <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-white/55">
+                      {getPackPrice(pack, values.currency).currency}
+                    </p>
+                  </div>
                 </div>
-                <span className="text-lg font-semibold text-white">
-                  {pack.price} {pack.currency}
-                </span>
+                <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+                  <span
+                    className={cn(
+                      "text-xs uppercase tracking-[0.22em]",
+                      values.selectedPack === pack.id ? "text-red-100" : "text-white/45",
+                    )}
+                  >
+                    {values.selectedPack === pack.id
+                      ? packSelectionCopy.selected
+                      : packSelectionCopy.action}
+                  </span>
+                  <span
+                    className={cn(
+                      "h-3.5 w-3.5 rounded-full border transition",
+                      values.selectedPack === pack.id
+                        ? "border-red-300 bg-red-500 shadow-[0_0_16px_rgba(239,68,68,0.65)]"
+                        : "border-white/20 bg-transparent",
+                    )}
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
-            </button>
+            </label>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <button

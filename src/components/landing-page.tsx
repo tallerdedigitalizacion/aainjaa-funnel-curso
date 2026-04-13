@@ -2,7 +2,7 @@
 
 import { OrderForm } from "@/components/order-form";
 import { SectionShell } from "@/components/ui/section-shell";
-import { getLocalizedPacks } from "@/config/packs";
+import { formatPackPrice, getLocalizedPacks, getPackPrice } from "@/config/packs";
 import { trackEvent } from "@/lib/tracking";
 import type { ReactNode } from "react";
 
@@ -143,10 +143,10 @@ export function LandingPage({ locale, messages }: LandingPageProps) {
                 </div>
                 <p className="text-right">
                   <span className="block text-4xl font-semibold text-white">
-                    {pack.price}
+                    {formatPackPrice(pack, pack.defaultCurrency, locale)}
                   </span>
                   <span className="text-sm uppercase tracking-[0.22em] text-white/60">
-                    {pack.currency}
+                    {getPackPrice(pack, pack.defaultCurrency).currency}
                   </span>
                 </p>
               </div>

@@ -51,8 +51,8 @@ export interface HighlightItem {
 export interface PackContent {
   id: SelectedPack;
   name: string;
-  price: string;
-  currency: CurrencyOption;
+  defaultCurrency: CurrencyOption;
+  prices: Partial<Record<CurrencyOption, number>>;
   badge?: string;
   recommended?: boolean;
   shippingRequired?: boolean;

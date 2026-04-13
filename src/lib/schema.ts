@@ -1,4 +1,4 @@
-import { getLocalizedPacks } from "@/config/packs";
+import { getLocalizedPacks, getPackPrice } from "@/config/packs";
 import { siteConfig } from "@/config/site";
 import { absoluteUrl } from "@/lib/utils";
 import type { LanguageOption } from "@/types/purchase";
@@ -28,8 +28,8 @@ export function buildSchema(locale: LanguageOption) {
           "Digital percussion learning experience with configurable packs, private access, and bilingual landing support.",
         offers: packs.map((pack) => ({
           "@type": "Offer",
-          price: pack.price,
-          priceCurrency: pack.currency,
+          price: getPackPrice(pack, pack.defaultCurrency).amount,
+          priceCurrency: getPackPrice(pack, pack.defaultCurrency).currency,
           availability: "https://schema.org/InStock",
           url: absoluteUrl(`/${locale}`),
           category: pack.name,
