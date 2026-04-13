@@ -7,7 +7,6 @@ export const dynamic = "force-static";
 const paths = [
   "",
   "/gracias",
-  "/private-access",
   "/legal/aviso-legal",
   "/legal/privacidad",
   "/legal/cookies",

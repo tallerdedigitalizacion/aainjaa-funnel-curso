@@ -96,7 +96,6 @@ export interface FormCopy {
 export interface FooterContent {
   copyright: string;
   legalLabel: string;
-  privateAccessLabel: string;
 }
 
 export interface LegalSection {
@@ -161,15 +160,6 @@ export interface MessageBundle {
     title: string;
     body: string;
     cta: string;
-  };
-  privateAccess: {
-    title: string;
-    intro: string;
-    helper: string;
-    emailLabel: string;
-    passwordLabel: string;
-    cta: string;
-    note: string;
   };
   legal: {
     commonBackLabel: string;

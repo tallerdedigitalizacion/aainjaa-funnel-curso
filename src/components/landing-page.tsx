@@ -222,15 +222,13 @@ export function LandingPage({ locale, messages }: LandingPageProps) {
         </div>
         <div className="mt-10 grid gap-4 lg:grid-cols-2">
           {messages.faq.items.map((item) => (
-            <details
+            <article
               key={item.question}
-              className="group rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5"
+              className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5"
             >
-              <summary className="cursor-pointer list-none font-semibold text-white">
-                {item.question}
-              </summary>
+              <h3 className="font-semibold text-white">{item.question}</h3>
               <p className="mt-4 text-sm leading-6 text-white/70">{item.answer}</p>
-            </details>
+            </article>
           ))}
         </div>
       </SectionShell>

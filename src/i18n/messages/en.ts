@@ -168,10 +168,6 @@ export const enMessages: MessageBundle = {
         question: "How long does delivery take?",
         answer: "Digital access is usually fast after validation. If physical material is included, timelines are indicative and may vary due to logistics or customs.",
       },
-      {
-        question: "What is private access?",
-        answer: "It is the placeholder entry point for the future password-protected area for students or buyers.",
-      },
     ],
   },
   form: {
@@ -247,15 +243,6 @@ export const enMessages: MessageBundle = {
     title: "Thank you for your order",
     body: "Your request is now inside the flow. This space is ready to show confirmation, a reference code, or next steps depending on the backend.",
     cta: "Back to home",
-  },
-  privateAccess: {
-    title: "Private access",
-    intro: "Protected-entry placeholder for students or verified buyers.",
-    helper: "This form does not authenticate yet. It is ready for future login, magic link, or backend integration.",
-    emailLabel: "Email or username",
-    passwordLabel: "Password",
-    cta: "Enter",
-    note: "Future auth integration should be implemented here.",
   },
   legal: {
     commonBackLabel: "Back to home",
@@ -347,7 +334,6 @@ export const enMessages: MessageBundle = {
   footer: {
     copyright: "AAINJAA. All rights reserved.",
     legalLabel: "Legal",
-    privateAccessLabel: "Private access",
   },
   notFound: {
     title: "This route missed the beat.",

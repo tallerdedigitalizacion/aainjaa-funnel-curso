@@ -29,9 +29,6 @@ export function SiteFooter({ locale, content }: SiteFooterProps) {
           <Link href={`/${locale}/legal/cookies`} className="hover:text-white">
             {content.legalLabel} / Cookies
           </Link>
-          <Link href={`/${locale}/private-access`} className="hover:text-white">
-            {content.privateAccessLabel}
-          </Link>
         </div>
       </div>
     </footer>

@@ -168,10 +168,6 @@ export const esMessages: MessageBundle = {
         question: "Cuanto tarda la entrega?",
         answer: "El acceso digital suele ser rapido tras validacion. Si hubiera material fisico, los tiempos son orientativos y pueden variar por logistica o aduanas.",
       },
-      {
-        question: "Que es private access?",
-        answer: "Es el placeholder de la futura entrada con contrasena al contenido o area exclusiva de alumnos.",
-      },
     ],
   },
   form: {
@@ -247,15 +243,6 @@ export const esMessages: MessageBundle = {
     title: "Gracias por tu pedido",
     body: "Tu solicitud ya esta dentro del flujo. Este espacio queda listo para mostrar confirmacion, codigo de referencia o siguientes pasos segun el backend.",
     cta: "Volver al inicio",
-  },
-  privateAccess: {
-    title: "Private access",
-    intro: "Placeholder de entrada protegida para alumnos o compradores verificados.",
-    helper: "Este formulario todavia no autentica. Queda listo para integrar login real o verificacion de acceso.",
-    emailLabel: "Email o usuario",
-    passwordLabel: "Contrasena",
-    cta: "Entrar",
-    note: "Implementar aqui la integracion futura con auth, Magic Link o backend propio.",
   },
   legal: {
     commonBackLabel: "Volver al inicio",
@@ -347,7 +334,6 @@ export const esMessages: MessageBundle = {
   footer: {
     copyright: "AAINJAA. Todos los derechos reservados.",
     legalLabel: "Legal",
-    privateAccessLabel: "Acceso privado",
   },
   notFound: {
     title: "Esta ruta no encontro el ritmo.",
