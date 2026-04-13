@@ -2,8 +2,8 @@ import type {
   CurrencyOption,
   LanguageOption,
   PaymentMethod,
+  PreferredLanguageOption,
   SelectedPack,
-  SkillLevel,
 } from "@/types/purchase";
 
 export interface NavLink {
@@ -83,13 +83,23 @@ export interface FormCopy {
   privacyLabel: string;
   manualInfoLabel: string;
   stripeInfoLabel: string;
+  stripeHelperLabel: string;
+  manualHelperLabel: string;
+  paymentDetails: {
+    stripeTitle: string;
+    stripeDescription: string;
+    stripePlaceholderLabel: string;
+    stripePlaceholderHint: string;
+    manualTitle: string;
+    manualDescription: string;
+    supportPrefix: string;
+  };
   labels: Record<string, string>;
   placeholders: Record<string, string>;
   errors: Record<string, string>;
   options: {
-    languages: Array<{ value: LanguageOption; label: string }>;
+    languages: Array<{ value: PreferredLanguageOption; label: string }>;
     currencies: Array<{ value: CurrencyOption; label: string }>;
-    levels: Array<{ value: SkillLevel; label: string }>;
   };
 }
 

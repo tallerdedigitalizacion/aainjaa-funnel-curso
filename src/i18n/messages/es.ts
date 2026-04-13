@@ -1,3 +1,4 @@
+import { getPurchaseFormOptions } from "@/config/purchase-options";
 import type { MessageBundle } from "@/types/content";
 
 export const esMessages: MessageBundle = {
@@ -181,19 +182,28 @@ export const esMessages: MessageBundle = {
     privacyLabel: "He leido y acepto la politica de privacidad y el tratamiento de mis datos para gestionar este pedido.",
     manualInfoLabel: "Preferencia de pago manual",
     stripeInfoLabel: "Preferencia de pago con Stripe",
+    stripeHelperLabel: "Pago automatico con tarjeta",
+    manualHelperLabel: "Transferencia o gestion manual",
+    paymentDetails: {
+      stripeTitle: "Pago seguro con tarjeta",
+      stripeDescription: "Introduce los datos de tu tarjeta para completar el pago.",
+      stripePlaceholderLabel: "Contenedor preparado para Stripe Elements",
+      stripePlaceholderHint: "Aqui ira el widget real de tarjeta cuando Stripe quede conectado.",
+      manualTitle: "Pago manual y confirmacion",
+      manualDescription:
+        "Al enviar este pedido, recibiras un correo con los datos de pago y la referencia o codigo necesario para realizar el pago y la conciliacion. Una vez confirmado manualmente, tendras acceso al curso.",
+      supportPrefix: "Si tienes cualquier duda o incidencia, podras comunicarte con nosotros en",
+    },
     labels: {
       fullName: "Nombre completo",
       email: "Email",
-      phone: "Telefono",
+      phone: "Telefono opcional",
       country: "Pais",
-      language: "Idioma",
-      currency: "Moneda",
-      skillLevel: "Nivel",
+      language: "Idioma preferido",
+      currency: "Moneda de pago",
       selectedPack: "Pack seleccionado",
       paymentMethodPreferred: "Metodo de pago",
       shippingAddress: "Direccion de envio",
-      notes: "Notas",
-      requestCode: "Codigo de pedido",
       line1: "Direccion",
       line2: "Direccion adicional",
       city: "Ciudad",
@@ -205,9 +215,7 @@ export const esMessages: MessageBundle = {
       fullName: "Tu nombre y apellidos",
       email: "tu@email.com",
       phone: "+34 600 000 000",
-      country: "Espana",
-      notes: "Cuéntanos cualquier detalle relevante para tu pedido",
-      requestCode: "Opcional",
+      country: "Tu pais de residencia",
       line1: "Calle y numero",
       line2: "Piso, puerta, referencia",
       city: "Madrid",
@@ -218,26 +226,13 @@ export const esMessages: MessageBundle = {
     errors: {
       fullName: "Introduce tu nombre completo.",
       email: "Introduce un email valido.",
+      phone: "Introduce un telefono valido con prefijo internacional.",
       country: "Indica tu pais.",
       privacyConsent: "Necesitamos tu consentimiento para procesar el pedido.",
       shippingAddress: "Completa la direccion de envio.",
       global: "Revisa los campos y vuelve a intentarlo.",
     },
-    options: {
-      languages: [
-        { value: "es", label: "Espanol" },
-        { value: "en", label: "English" },
-      ],
-      currencies: [
-        { value: "EUR", label: "EUR" },
-        { value: "USD", label: "USD" },
-      ],
-      levels: [
-        { value: "beginner", label: "Iniciacion" },
-        { value: "intermediate", label: "Intermedio" },
-        { value: "advanced", label: "Avanzado" },
-      ],
-    },
+    options: getPurchaseFormOptions("es"),
   },
   thanks: {
     title: "Gracias por tu pedido",

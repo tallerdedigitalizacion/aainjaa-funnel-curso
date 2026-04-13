@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { formConfig } from "@/config/forms";
 import { formatPackPrice, getLocalizedPacks, getPackPrice } from "@/config/packs";
+import { siteConfig } from "@/config/site";
 import { trackingConfig } from "@/config/tracking";
 import { submitPurchaseRequest } from "@/lib/forms";
 import { trackEvent } from "@/lib/tracking";
@@ -14,11 +15,11 @@ import type {
   FormSubmissionState,
   LanguageOption,
   PaymentMethod,
+  PreferredLanguageOption,
   PurchaseRequestPayload,
   PurchaseRequestResponse,
   SelectedPack,
   ShippingAddress,
-  SkillLevel,
   TrackingConsentState,
 } from "@/types/purchase";
 
@@ -32,16 +33,13 @@ interface FormValues {
   email: string;
   phone: string;
   country: string;
-  language: LanguageOption;
-  currency: "EUR" | "USD";
-  skillLevel: SkillLevel | "";
+  language: PreferredLanguageOption;
+  currency: PurchaseRequestPayload["currency"];
   selectedPack: SelectedPack;
   paymentMethodPreferred: PaymentMethod;
   shippingAddress: ShippingAddress;
-  notes: string;
   privacyConsent: boolean;
   honeypot: string;
-  requestCode: string;
 }
 
 type ErrorMap = Partial<Record<string, string>>;
@@ -67,14 +65,11 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
     country: "",
     language: locale,
     currency: "EUR",
-    skillLevel: "",
     selectedPack: "premium",
     paymentMethodPreferred: "stripe",
     shippingAddress: emptyShipping,
-    notes: "",
     privacyConsent: false,
     honeypot: "",
-    requestCode: "",
   });
   const [errors, setErrors] = useState<ErrorMap>({});
 
@@ -99,9 +94,13 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
 
   function validateForm() {
     const nextErrors: ErrorMap = {};
+    const normalizedPhone = normalizePhone(values.phone);
 
     if (!values.fullName.trim()) nextErrors.fullName = copy.errors.fullName;
     if (!/^\S+@\S+\.\S+$/.test(values.email)) nextErrors.email = copy.errors.email;
+    if (values.phone.trim() && !isValidInternationalPhone(normalizedPhone)) {
+      nextErrors.phone = copy.errors.phone;
+    }
     if (!values.country.trim()) nextErrors.country = copy.errors.country;
     if (!values.privacyConsent) nextErrors.privacyConsent = copy.errors.privacyConsent;
 
@@ -142,20 +141,17 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
     const payload: PurchaseRequestPayload = {
       fullName: values.fullName.trim(),
       email: values.email.trim(),
-      phone: values.phone.trim() || undefined,
+      phone: normalizePhone(values.phone) || undefined,
       country: values.country.trim(),
       language: values.language,
       currency: values.currency,
-      skillLevel: values.skillLevel || undefined,
       selectedPack: values.selectedPack,
       paymentMethodPreferred: values.paymentMethodPreferred,
       shippingAddress: requiresShipping ? values.shippingAddress : undefined,
-      notes: values.notes.trim() || undefined,
       privacyConsent: values.privacyConsent,
       trackingConsent: getTrackingConsentState(),
       honeypot: values.honeypot,
       formKey: formConfig.formKey,
-      requestCode: values.requestCode || undefined,
       source: "landing-page",
       locale,
       submittedAt: new Date().toISOString(),
@@ -240,11 +236,14 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
         />
         <Field
           label={copy.labels.phone}
+          error={errors.phone}
           input={
             <input
               value={values.phone}
-              onChange={(event) => updateValue("phone", event.target.value)}
+              onChange={(event) => updateValue("phone", sanitizePhoneInput(event.target.value))}
               placeholder={copy.placeholders.phone}
+              autoComplete="tel"
+              inputMode="tel"
               className={inputClass}
             />
           }
@@ -267,7 +266,7 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
             <select
               value={values.language}
               onChange={(event) =>
-                updateValue("language", event.target.value as LanguageOption)
+                updateValue("language", event.target.value as PreferredLanguageOption)
               }
               className={inputClass}
             >
@@ -285,7 +284,7 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
             <select
               value={values.currency}
               onChange={(event) =>
-                updateValue("currency", event.target.value as "EUR" | "USD")
+                updateValue("currency", event.target.value as PurchaseRequestPayload["currency"])
               }
               className={inputClass}
             >
@@ -295,36 +294,6 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
                 </option>
               ))}
             </select>
-          }
-        />
-        <Field
-          label={copy.labels.skillLevel}
-          input={
-            <select
-              value={values.skillLevel}
-              onChange={(event) =>
-                updateValue("skillLevel", event.target.value as SkillLevel | "")
-              }
-              className={inputClass}
-            >
-              <option value="">-</option>
-              {copy.options.levels.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          }
-        />
-        <Field
-          label={copy.labels.requestCode}
-          input={
-            <input
-              value={values.requestCode}
-              onChange={(event) => updateValue("requestCode", event.target.value)}
-              placeholder={copy.placeholders.requestCode}
-              className={inputClass}
-            />
           }
         />
       </div>
@@ -412,7 +381,7 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
           className={choiceClass(values.paymentMethodPreferred === "stripe")}
         >
           <span className="font-semibold text-white">{copy.stripeInfoLabel}</span>
-          <span className="text-sm text-white/60">Checkout / payment link</span>
+          <span className="text-sm text-white/60">{copy.stripeHelperLabel}</span>
         </button>
         <button
           type="button"
@@ -420,8 +389,72 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
           className={choiceClass(values.paymentMethodPreferred === "manual")}
         >
           <span className="font-semibold text-white">{copy.manualInfoLabel}</span>
-          <span className="text-sm text-white/60">Reference code and instructions</span>
+          <span className="text-sm text-white/60">{copy.manualHelperLabel}</span>
         </button>
+      </div>
+
+      <div
+        className="mt-4 transition-all duration-200"
+        aria-live="polite"
+        aria-label={copy.labels.paymentMethodPreferred}
+      >
+        {values.paymentMethodPreferred === "stripe" ? (
+          <section className="rounded-[1.5rem] border border-red-500/35 bg-gradient-to-br from-red-500/12 via-red-500/6 to-black/40 p-5 shadow-[0_0_40px_rgba(220,38,38,0.12)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="max-w-xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-red-200">
+                  {copy.paymentDetails.stripeTitle}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-white/72">
+                  {copy.paymentDetails.stripeDescription}
+                </p>
+              </div>
+              <span className="inline-flex rounded-full border border-red-400/30 bg-red-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-red-100">
+                Stripe
+              </span>
+            </div>
+            <div className="mt-5 rounded-[1.25rem] border border-dashed border-white/15 bg-black/35 p-4 sm:p-5">
+              <p className="text-sm font-semibold text-white">
+                {copy.paymentDetails.stripePlaceholderLabel}
+              </p>
+              <div className="mt-4 grid gap-3 md:grid-cols-[1.4fr_0.6fr]">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/35">
+                  4242 4242 4242 4242
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/35">
+                    MM / AA
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/35">
+                    CVC
+                  </div>
+                </div>
+              </div>
+              <p className="mt-4 text-xs leading-5 text-white/50">
+                {copy.paymentDetails.stripePlaceholderHint}
+              </p>
+            </div>
+          </section>
+        ) : (
+          <section className="rounded-[1.5rem] border border-white/10 bg-black/25 p-5">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-red-200">
+              {copy.paymentDetails.manualTitle}
+            </p>
+            <p className="mt-3 text-sm leading-7 text-white/76">
+              {copy.paymentDetails.manualDescription}
+            </p>
+            <p className="mt-3 text-sm leading-7 text-white/76">
+              {copy.paymentDetails.supportPrefix}{" "}
+              <a
+                href={`mailto:${siteConfig.supportEmail}`}
+                className="font-semibold text-red-200 underline decoration-red-400/40 underline-offset-4 transition hover:text-white"
+              >
+                {siteConfig.supportEmail}
+              </a>
+              .
+            </p>
+          </section>
+        )}
       </div>
 
       {requiresShipping ? (
@@ -504,12 +537,6 @@ export function OrderForm({ locale, copy }: OrderFormProps) {
       ) : null}
 
       <div className="mt-6 grid gap-4">
-        <textarea
-          value={values.notes}
-          onChange={(event) => updateValue("notes", event.target.value)}
-          placeholder={copy.placeholders.notes}
-          className={cn(inputClass, "min-h-32 resize-y")}
-        />
         <label className="flex items-start gap-3 text-sm text-white/75">
           <input
             type="checkbox"
@@ -604,4 +631,21 @@ function choiceClass(active: boolean) {
       ? "border-red-500 bg-red-500/10"
       : "border-white/10 bg-black/25 hover:border-white/25",
   );
+}
+
+function sanitizePhoneInput(value: string) {
+  const sanitized = value.replace(/[^\d+\s\-().]/g, "");
+  const leadingPlus = sanitized.startsWith("+") ? "+" : "";
+  const body = (leadingPlus ? sanitized.slice(1) : sanitized).replace(/\+/g, "");
+  return `${leadingPlus}${body}`;
+}
+
+function normalizePhone(value: string) {
+  return value.replace(/[^\d+]/g, "");
+}
+
+function isValidInternationalPhone(value: string) {
+  if (!/^\+?\d+$/.test(value)) return false;
+  const digitsOnly = value.replace(/\D/g, "");
+  return digitsOnly.length >= 7 && digitsOnly.length <= 15;
 }

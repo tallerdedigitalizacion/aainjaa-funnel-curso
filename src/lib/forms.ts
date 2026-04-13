@@ -12,7 +12,7 @@ export async function submitPurchaseRequest(
       ok: true,
       message:
         "No purchase endpoint configured yet. Frontend payload is ready for future backend integration.",
-      requestCode: payload.requestCode || `AAI-${Date.now().toString().slice(-6)}`,
+      requestCode: `AAI-${Date.now().toString().slice(-6)}`,
       redirectUrl:
         payload.paymentMethodPreferred === "stripe"
           ? undefined

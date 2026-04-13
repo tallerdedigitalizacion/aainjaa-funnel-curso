@@ -1,3 +1,4 @@
+import { getPurchaseFormOptions } from "@/config/purchase-options";
 import type { MessageBundle } from "@/types/content";
 
 export const enMessages: MessageBundle = {
@@ -181,19 +182,28 @@ export const enMessages: MessageBundle = {
     privacyLabel: "I have read and accept the privacy policy and the processing of my data to manage this order.",
     manualInfoLabel: "Manual payment preference",
     stripeInfoLabel: "Stripe payment preference",
+    stripeHelperLabel: "Automatic card payment",
+    manualHelperLabel: "Transfer or manual handling",
+    paymentDetails: {
+      stripeTitle: "Secure card payment",
+      stripeDescription: "Enter your card details to complete the payment.",
+      stripePlaceholderLabel: "Container prepared for Stripe Elements",
+      stripePlaceholderHint: "The real card widget will be mounted here once Stripe is connected.",
+      manualTitle: "Manual payment and confirmation",
+      manualDescription:
+        "After submitting this order, you will receive an email with the payment details and the reference code needed to complete the payment and reconciliation. Once the payment is manually confirmed, you will receive access to the course.",
+      supportPrefix: "If you have any questions or issues, you can contact us at",
+    },
     labels: {
       fullName: "Full name",
       email: "Email",
-      phone: "Phone",
+      phone: "Phone optional",
       country: "Country",
-      language: "Language",
-      currency: "Currency",
-      skillLevel: "Level",
+      language: "Preferred language",
+      currency: "Payment currency",
       selectedPack: "Selected pack",
       paymentMethodPreferred: "Payment method",
       shippingAddress: "Shipping address",
-      notes: "Notes",
-      requestCode: "Request code",
       line1: "Address",
       line2: "Additional address",
       city: "City",
@@ -205,9 +215,7 @@ export const enMessages: MessageBundle = {
       fullName: "Your full name",
       email: "you@email.com",
       phone: "+1 555 000 000",
-      country: "United States",
-      notes: "Share any relevant detail for your order",
-      requestCode: "Optional",
+      country: "Your country of residence",
       line1: "Street and number",
       line2: "Apt, suite, reference",
       city: "New York",
@@ -218,26 +226,13 @@ export const enMessages: MessageBundle = {
     errors: {
       fullName: "Please enter your full name.",
       email: "Please enter a valid email.",
+      phone: "Please enter a valid international phone number.",
       country: "Please enter your country.",
       privacyConsent: "We need your consent to process the order.",
       shippingAddress: "Please complete the shipping address.",
       global: "Please review the form and try again.",
     },
-    options: {
-      languages: [
-        { value: "es", label: "Spanish" },
-        { value: "en", label: "English" },
-      ],
-      currencies: [
-        { value: "EUR", label: "EUR" },
-        { value: "USD", label: "USD" },
-      ],
-      levels: [
-        { value: "beginner", label: "Beginner" },
-        { value: "intermediate", label: "Intermediate" },
-        { value: "advanced", label: "Advanced" },
-      ],
-    },
+    options: getPurchaseFormOptions("en"),
   },
   thanks: {
     title: "Thank you for your order",

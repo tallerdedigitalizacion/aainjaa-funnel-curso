@@ -1,8 +1,8 @@
 export type PaymentMethod = "stripe" | "manual";
 export type SelectedPack = "basic" | "premium" | "pro";
 export type LanguageOption = "es" | "en";
-export type CurrencyOption = "EUR" | "USD";
-export type SkillLevel = "beginner" | "intermediate" | "advanced";
+export type PreferredLanguageOption = "es" | "en" | "fr" | "de" | "ru" | "ro";
+export type CurrencyOption = "EUR" | "USD" | "GBP" | "JPY" | "COP";
 export type TrackingConsentState = "accepted" | "rejected" | "custom";
 export type FormSubmissionState = "idle" | "loading" | "success" | "error";
 
@@ -21,18 +21,15 @@ export interface PurchaseRequest {
   email: string;
   phone?: string;
   country: string;
-  language: LanguageOption;
+  language: PreferredLanguageOption;
   currency: CurrencyOption;
-  skillLevel?: SkillLevel;
   selectedPack: SelectedPack;
   paymentMethodPreferred: PaymentMethod;
   shippingAddress?: ShippingAddress;
-  notes?: string;
   privacyConsent: boolean;
   trackingConsent: TrackingConsentState;
   honeypot: string;
   formKey: string;
-  requestCode?: string;
 }
 
 export interface PurchaseRequestPayload extends PurchaseRequest {
