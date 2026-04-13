@@ -176,24 +176,12 @@ export const enMessages: MessageBundle = {
     subtitle: "Embedded form with validation, ready for your own backend, Lambda, or API.",
     submitLabel: "Send order",
     submittingLabel: "Sending...",
-    successTitle: "Order submitted",
-    successCopy: "Your request has been recorded. Redirects or manual instructions can be shown right after submission.",
     errorTitle: "We could not submit the form.",
     privacyLabel: "I have read and accept the privacy policy and the processing of my data to manage this order.",
     manualInfoLabel: "Manual payment preference",
     stripeInfoLabel: "Stripe payment preference",
     stripeHelperLabel: "Automatic card payment",
     manualHelperLabel: "Transfer or manual handling",
-    paymentDetails: {
-      stripeTitle: "Secure card payment",
-      stripeDescription: "Enter your card details to complete the payment.",
-      stripePlaceholderLabel: "Container prepared for Stripe Elements",
-      stripePlaceholderHint: "The real card widget will be mounted here once Stripe is connected.",
-      manualTitle: "Manual payment and confirmation",
-      manualDescription:
-        "After submitting this order, you will receive an email with the payment details and the reference code needed to complete the payment and reconciliation. Once the payment is manually confirmed, you will receive access to the course.",
-      supportPrefix: "If you have any questions or issues, you can contact us at",
-    },
     labels: {
       fullName: "Full name",
       email: "Email",
@@ -235,9 +223,27 @@ export const enMessages: MessageBundle = {
     options: getPurchaseFormOptions("en"),
   },
   thanks: {
-    title: "Thank you for your order",
-    body: "Your request is now inside the flow. This space is ready to show confirmation, a reference code, or next steps depending on the backend.",
-    cta: "Back to home",
+    eyebrow: "Thank you",
+    default: {
+      title: "Thank you for your order",
+      body: "Your request is now inside the flow. This space is ready to show confirmation, a reference code, or next steps depending on the backend.",
+      cta: "Back to home",
+    },
+    manualPending: {
+      title: "Order received",
+      body: "We have received your order. You will shortly receive an email with the payment details and the reference needed to complete the manual payment and reconciliation. Once the payment is confirmed, you will receive access to the course.",
+      supportPrefix: "If you have any questions or issues, you can write to us at",
+    },
+    stripeSuccess: {
+      title: "Thank you for your purchase",
+      body: "Your payment has been processed successfully. You will shortly receive an email with the instructions to access your private course.",
+      supportPrefix: "If you have any questions or issues, you can write to us at",
+    },
+    stripeCancel: {
+      title: "Payment not completed",
+      body: "We could not confirm the payment. If you want, you can try again from the landing page.",
+      cta: "Back to home",
+    },
   },
   legal: {
     commonBackLabel: "Back to home",
@@ -277,8 +283,8 @@ export const enMessages: MessageBundle = {
         {
           heading: "Collected data",
           paragraphs: [
-            "The form may collect name, email, phone, country, language preferences, currency, skill level, and shipping data if required by the pack.",
-            "Consent states, technical identifiers, and user-provided notes may also be processed.",
+            "The form may collect name, email, phone, country, language preferences, currency, and shipping data if required by the pack.",
+            "Consent states and technical identifiers needed to manage the order may also be processed.",
           ],
         },
         {

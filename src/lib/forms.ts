@@ -1,26 +1,28 @@
 import { formConfig } from "@/config/forms";
 import type {
+  PurchaseFlowResponse,
   PurchaseRequestPayload,
-  PurchaseRequestResponse,
 } from "@/types/purchase";
 
 export async function submitPurchaseRequest(
   payload: PurchaseRequestPayload,
-): Promise<PurchaseRequestResponse> {
+): Promise<PurchaseFlowResponse> {
   if (!formConfig.apiUrl) {
+    const requestCode = `AAI-${Date.now().toString().slice(-6)}`;
+    if (payload.paymentMethodPreferred === "manual") {
+      return {
+        ok: true,
+        flow: "manual",
+        requestCode,
+        redirectUrl: `/${payload.locale}/gracias?payment=manual&status=pending`,
+      };
+    }
+
     return {
       ok: true,
-      message:
-        "No purchase endpoint configured yet. Frontend payload is ready for future backend integration.",
-      requestCode: `AAI-${Date.now().toString().slice(-6)}`,
-      redirectUrl:
-        payload.paymentMethodPreferred === "stripe"
-          ? undefined
-          : formConfig.successRedirect || undefined,
-      paymentInstructions:
-        payload.paymentMethodPreferred === "manual"
-          ? "Manual payment instructions will be returned by the backend in production."
-          : undefined,
+      flow: "stripe",
+      requestCode,
+      checkoutUrl: `/${payload.locale}/gracias?payment=stripe&status=success`,
     };
   }
 
@@ -32,15 +34,19 @@ export async function submitPurchaseRequest(
     body: JSON.stringify(payload),
   });
 
-  let data: PurchaseRequestResponse | null = null;
+  let data: PurchaseFlowResponse | null = null;
   try {
-    data = (await response.json()) as PurchaseRequestResponse;
+    data = (await response.json()) as PurchaseFlowResponse;
   } catch {
     data = null;
   }
 
   if (!response.ok || !data) {
-    throw new Error(data?.message || "Purchase request failed.");
+    throw new Error("Purchase request failed.");
+  }
+
+  if (!data.ok) {
+    throw new Error(data.error || "Purchase request failed.");
   }
 
   return data;

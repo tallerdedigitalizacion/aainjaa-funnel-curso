@@ -38,9 +38,27 @@ export interface PurchaseRequestPayload extends PurchaseRequest {
   submittedAt: string;
 }
 
+export type PurchaseFlowResponse =
+  | {
+      ok: true;
+      flow: "manual";
+      requestCode: string;
+      redirectUrl?: string;
+    }
+  | {
+      ok: true;
+      flow: "stripe";
+      requestCode: string;
+      checkoutUrl: string;
+    }
+  | {
+      ok: false;
+      error: string;
+    };
+
 export interface PurchaseRequestResponse {
   ok: boolean;
-  message: string;
+  message?: string;
   requestCode?: string;
   redirectUrl?: string;
   paymentInstructions?: string;

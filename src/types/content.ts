@@ -77,23 +77,12 @@ export interface FormCopy {
   subtitle: string;
   submitLabel: string;
   submittingLabel: string;
-  successTitle: string;
-  successCopy: string;
   errorTitle: string;
   privacyLabel: string;
   manualInfoLabel: string;
   stripeInfoLabel: string;
   stripeHelperLabel: string;
   manualHelperLabel: string;
-  paymentDetails: {
-    stripeTitle: string;
-    stripeDescription: string;
-    stripePlaceholderLabel: string;
-    stripePlaceholderHint: string;
-    manualTitle: string;
-    manualDescription: string;
-    supportPrefix: string;
-  };
   labels: Record<string, string>;
   placeholders: Record<string, string>;
   errors: Record<string, string>;
@@ -167,9 +156,27 @@ export interface MessageBundle {
   };
   form: FormCopy;
   thanks: {
-    title: string;
-    body: string;
-    cta: string;
+    eyebrow: string;
+    default: {
+      title: string;
+      body: string;
+      cta: string;
+    };
+    manualPending: {
+      title: string;
+      body: string;
+      supportPrefix: string;
+    };
+    stripeSuccess: {
+      title: string;
+      body: string;
+      supportPrefix: string;
+    };
+    stripeCancel: {
+      title: string;
+      body: string;
+      cta: string;
+    };
   };
   legal: {
     commonBackLabel: string;

@@ -176,24 +176,12 @@ export const esMessages: MessageBundle = {
     subtitle: "Formulario integrado, validado y preparado para backend propio con Lambda o API.",
     submitLabel: "Enviar pedido",
     submittingLabel: "Enviando...",
-    successTitle: "Pedido enviado",
-    successCopy: "Tu solicitud se ha registrado. Si hay redireccion o instrucciones manuales, se mostraran al terminar.",
     errorTitle: "No hemos podido enviar el formulario.",
     privacyLabel: "He leido y acepto la politica de privacidad y el tratamiento de mis datos para gestionar este pedido.",
     manualInfoLabel: "Preferencia de pago manual",
     stripeInfoLabel: "Preferencia de pago con Stripe",
     stripeHelperLabel: "Pago automatico con tarjeta",
     manualHelperLabel: "Transferencia o gestion manual",
-    paymentDetails: {
-      stripeTitle: "Pago seguro con tarjeta",
-      stripeDescription: "Introduce los datos de tu tarjeta para completar el pago.",
-      stripePlaceholderLabel: "Contenedor preparado para Stripe Elements",
-      stripePlaceholderHint: "Aqui ira el widget real de tarjeta cuando Stripe quede conectado.",
-      manualTitle: "Pago manual y confirmacion",
-      manualDescription:
-        "Al enviar este pedido, recibiras un correo con los datos de pago y la referencia o codigo necesario para realizar el pago y la conciliacion. Una vez confirmado manualmente, tendras acceso al curso.",
-      supportPrefix: "Si tienes cualquier duda o incidencia, podras comunicarte con nosotros en",
-    },
     labels: {
       fullName: "Nombre completo",
       email: "Email",
@@ -235,9 +223,27 @@ export const esMessages: MessageBundle = {
     options: getPurchaseFormOptions("es"),
   },
   thanks: {
-    title: "Gracias por tu pedido",
-    body: "Tu solicitud ya esta dentro del flujo. Este espacio queda listo para mostrar confirmacion, codigo de referencia o siguientes pasos segun el backend.",
-    cta: "Volver al inicio",
+    eyebrow: "Gracias",
+    default: {
+      title: "Gracias por tu pedido",
+      body: "Tu solicitud ya esta dentro del flujo. Este espacio queda listo para mostrar confirmacion, codigo de referencia o siguientes pasos segun el backend.",
+      cta: "Volver al inicio",
+    },
+    manualPending: {
+      title: "Pedido recibido",
+      body: "Hemos recibido tu pedido. En breve recibiras un correo con los datos de pago y la referencia necesaria para completar el pago manual y la conciliacion. Una vez confirmado el pago, tendras acceso al curso.",
+      supportPrefix: "Si tienes cualquier duda o incidencia, puedes escribirnos a",
+    },
+    stripeSuccess: {
+      title: "Gracias por tu compra",
+      body: "Tu pago se ha procesado correctamente. En breve recibiras un correo con las instrucciones para acceder a tu curso privado.",
+      supportPrefix: "Si tienes cualquier duda o incidencia, puedes escribirnos a",
+    },
+    stripeCancel: {
+      title: "Pago no completado",
+      body: "No hemos podido confirmar el pago. Si quieres, puedes volver a intentarlo desde la landing.",
+      cta: "Volver al inicio",
+    },
   },
   legal: {
     commonBackLabel: "Volver al inicio",
@@ -277,8 +283,8 @@ export const esMessages: MessageBundle = {
         {
           heading: "Datos recogidos",
           paragraphs: [
-            "El formulario puede recoger nombre, email, telefono, pais, preferencias de idioma, moneda, nivel y datos de envio si el pack lo requiere.",
-            "Tambien se procesan consentimientos, identificadores tecnicos y notas facilitadas por la persona usuaria.",
+            "El formulario puede recoger nombre, email, telefono, pais, preferencias de idioma, moneda y datos de envio si el pack lo requiere.",
+            "Tambien se procesan consentimientos e identificadores tecnicos necesarios para gestionar el pedido.",
           ],
         },
         {
