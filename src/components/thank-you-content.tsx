@@ -14,19 +14,9 @@ interface ThankYouContentProps {
 
 export function ThankYouContent({ locale, messages }: ThankYouContentProps) {
   const searchParams = useSearchParams();
-  const payment = searchParams.get("payment") || undefined;
   const status = searchParams.get("status") || undefined;
-  const variant = resolveThankYouVariant(payment, status);
-  const content =
-    variant === "manualPending"
-      ? messages.thanks.manualPending
-      : variant === "stripeSuccess"
-        ? messages.thanks.stripeSuccess
-        : variant === "stripeCancel"
-          ? messages.thanks.stripeCancel
-          : messages.thanks.default;
-  const showSupport =
-    variant === "manualPending" || variant === "stripeSuccess";
+  const isCancel = status === "cancel";
+  const content = isCancel ? messages.thanks.cancel : messages.thanks.success;
 
   return (
     <div className="max-w-3xl rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-8 sm:p-12">
@@ -37,9 +27,9 @@ export function ThankYouContent({ locale, messages }: ThankYouContentProps) {
       <p className="mt-5 max-w-2xl text-lg leading-8 text-white/72">
         {content.body}
       </p>
-      {showSupport ? (
+      {!isCancel ? (
         <p className="mt-4 max-w-2xl text-base leading-7 text-white/68">
-          {"supportPrefix" in content ? content.supportPrefix : ""}{" "}
+          {messages.thanks.success.supportPrefix}{" "}
           <a
             href={`mailto:${siteConfig.supportEmail}`}
             className="font-semibold text-red-200 underline decoration-red-400/40 underline-offset-4 transition hover:text-white"
@@ -53,15 +43,8 @@ export function ThankYouContent({ locale, messages }: ThankYouContentProps) {
         href={`/${locale}`}
         className="mt-8 inline-flex rounded-full bg-red-600 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-red-500"
       >
-        {"cta" in content ? content.cta : messages.thanks.default.cta}
+        {content.cta}
       </Link>
     </div>
   );
-}
-
-function resolveThankYouVariant(payment?: string, status?: string) {
-  if (payment === "manual" && status === "pending") return "manualPending";
-  if (payment === "stripe" && status === "success") return "stripeSuccess";
-  if (payment === "stripe" && status === "cancel") return "stripeCancel";
-  return "default";
 }

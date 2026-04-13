@@ -1,31 +1,14 @@
-export type PaymentMethod = "stripe" | "manual";
-export type SelectedPack = "basic" | "premium" | "pro";
 export type LanguageOption = "es" | "en";
-export type PreferredLanguageOption = "es" | "en" | "fr" | "de" | "ru" | "ro";
-export type CurrencyOption = "EUR" | "USD" | "GBP" | "JPY" | "COP";
+export type CurrencyOption = "EUR";
 export type TrackingConsentState = "accepted" | "rejected" | "custom";
 export type FormSubmissionState = "idle" | "loading" | "success" | "error";
 
-export interface ShippingAddress {
-  recipient?: string;
-  line1: string;
-  line2?: string;
-  city: string;
-  region?: string;
-  postalCode: string;
-  country: string;
-}
-
 export interface PurchaseRequest {
+  productId: string;
   fullName: string;
   email: string;
-  phone?: string;
-  country: string;
-  language: PreferredLanguageOption;
+  language: LanguageOption;
   currency: CurrencyOption;
-  selectedPack: SelectedPack;
-  paymentMethodPreferred: PaymentMethod;
-  shippingAddress?: ShippingAddress;
   privacyConsent: boolean;
   trackingConsent: TrackingConsentState;
   honeypot: string;
@@ -41,13 +24,6 @@ export interface PurchaseRequestPayload extends PurchaseRequest {
 export type PurchaseFlowResponse =
   | {
       ok: true;
-      flow: "manual";
-      requestCode: string;
-      redirectUrl?: string;
-    }
-  | {
-      ok: true;
-      flow: "stripe";
       requestCode: string;
       checkoutUrl: string;
     }

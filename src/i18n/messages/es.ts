@@ -1,4 +1,3 @@
-import { getPurchaseFormOptions } from "@/config/purchase-options";
 import type { MessageBundle } from "@/types/content";
 
 export const esMessages: MessageBundle = {
@@ -8,16 +7,16 @@ export const esMessages: MessageBundle = {
   meta: {
     title: "AAINJAA | Percusión escénica con Homero Cortes",
     description:
-      "Landing multiidioma para vender un producto digital de percusión de AAINJAA con packs, formulario integrado y flujos preparados para Stripe o pago manual.",
+      "Landing multiidioma para validar una masterclass digital de percusión de AAINJAA con una sola oferta y checkout directo con Stripe.",
     siteName: "AAINJAA",
     ogTitle: "AAINJAA | Producto digital de percusión",
     ogDescription:
-      "Aprende un arreglo escénico de percusión con recursos claros, packs configurables y acceso digital privado.",
+      "Accede a una masterclass digital de percusión con oferta de lanzamiento y checkout directo con Stripe.",
   },
   nav: [
     { label: "Valor", href: "#promise" },
     { label: "Incluye", href: "#includes" },
-    { label: "Packs", href: "#packs" },
+    { label: "Oferta", href: "#offer" },
     { label: "FAQ", href: "#faq" },
     { label: "Pedido", href: "#order" },
   ],
@@ -25,17 +24,16 @@ export const esMessages: MessageBundle = {
     eyebrow: "AAINJAA x Homero Cortes",
     title: "Percusión con carácter escénico, estructura clara y pulso real.",
     subtitle:
-      "Una landing preparada para vender un producto digital que combina energía de directo, aprendizaje guiado y una experiencia de compra lista para iterar.",
-    primaryCta: { label: "Quiero mi pack", href: "#packs", event: "cta_primary_click" },
-    secondaryCta: { label: "Ver highlights", href: "#highlights", event: "cta_secondary_click" },
+      "Una propuesta directa para validar una sola masterclass digital, con mensaje claro, oferta de lanzamiento y checkout sin pasos extra dentro de la landing.",
+    primaryCta: { label: "Quiero acceder ahora", href: "#order", event: "cta_primary_click" },
     teaserLabel: "Teaser principal",
     teaserTitle: "Espacio listo para vídeo, visual teaser o collage de campaña",
     teaserCopy:
       "Sustituye este bloque por un clip, una miniatura o un montaje editorial cuando el material final esté listo.",
     stats: [
-      { label: "Formato", value: "Digital + ampliable" },
+      { label: "Formato", value: "Masterclass digital" },
       { label: "Idiomas", value: "ES / EN" },
-      { label: "Pago", value: "Stripe o manual" },
+      { label: "Oferta", value: "20% lanzamiento · 7 dias" },
     ],
   },
   promise: {
@@ -118,10 +116,10 @@ export const esMessages: MessageBundle = {
       },
     ],
   },
-  packs: {
-    title: "Elige el pack que mejor acompana tu momento",
-    intro: "Tres packs configurables, un recomendado y una base lista para Stripe o flujo manual.",
-    guarantee: "El acceso al contenido digital se activa tras verificarse el pago. Si hay material fisico, se confirma segun disponibilidad.",
+  offer: {
+    title: "Una unica oferta para validar interes real",
+    intro: "Un solo producto, un solo precio visible y una sola decision: enviar el pedido y completar el pago en Stripe.",
+    supportLine: "Flujo de compra",
   },
   authority: {
     title: "Sobre Homero y AAINJAA",
@@ -143,11 +141,11 @@ export const esMessages: MessageBundle = {
     items: [
       {
         question: "Cuando recibo el acceso?",
-        answer: "Tras validar el pago, el backend podra aprobar el acceso y enviar instrucciones o activar el area privada.",
+        answer: "Tras completar el pago en Stripe, recibiras un correo con las instrucciones para acceder al curso.",
       },
       {
         question: "En que idioma esta el contenido?",
-        answer: "La web funciona en espanol e ingles. El contenido del producto se puede indicar por pack o en la respuesta del backend.",
+        answer: "La landing existe en espanol e ingles. El acceso y las comunicaciones pueden adaptarse al locale desde el que haces la compra.",
       },
       {
         question: "Necesito experiencia previa?",
@@ -155,91 +153,46 @@ export const esMessages: MessageBundle = {
       },
       {
         question: "Puedo pagar con Stripe?",
-        answer: "Si. El formulario esta preparado para redirigir a checkout o payment link cuando el backend o la configuracion lo indiquen.",
+        answer: "Si. Al enviar el formulario se crea el pedido y se redirige directamente a Stripe Checkout para terminar el pago.",
       },
       {
-        question: "Hay opcion de pago manual?",
-        answer: "Si. La respuesta del backend puede devolver instrucciones y un codigo de referencia para seguimiento.",
-      },
-      {
-        question: "El producto incluye material fisico?",
-        answer: "Solo si el pack configurado lo requiere. En ese caso se muestra direccion de envio y se informa de disponibilidad.",
-      },
-      {
-        question: "Cuanto tarda la entrega?",
-        answer: "El acceso digital suele ser rapido tras validacion. Si hubiera material fisico, los tiempos son orientativos y pueden variar por logistica o aduanas.",
+        question: "Cuanto dura la oferta?",
+        answer: "La oferta de lanzamiento aplica durante los primeros 7 dias con un 20% de descuento sobre el precio base.",
       },
     ],
   },
   form: {
-    title: "Haz tu pedido",
-    subtitle: "Formulario integrado, validado y preparado para backend propio con Lambda o API.",
-    submitLabel: "Enviar pedido",
+    title: "Reserva tu acceso",
+    subtitle: "Deja tu nombre y tu email. Al enviar el pedido te llevaremos directamente a Stripe para completar la compra.",
+    submitLabel: "Ir a Stripe Checkout",
     submittingLabel: "Enviando...",
     errorTitle: "No hemos podido enviar el formulario.",
+    checkoutNote: "No pedimos mas datos en esta fase. El pago se completa fuera de la landing, en Stripe Checkout.",
     privacyLabel: "He leido y acepto la politica de privacidad y el tratamiento de mis datos para gestionar este pedido.",
-    manualInfoLabel: "Preferencia de pago manual",
-    stripeInfoLabel: "Preferencia de pago con Stripe",
-    stripeHelperLabel: "Pago automatico con tarjeta",
-    manualHelperLabel: "Transferencia o gestion manual",
     labels: {
       fullName: "Nombre completo",
       email: "Email",
-      phone: "Telefono opcional",
-      country: "Pais",
-      language: "Idioma preferido",
-      currency: "Moneda de pago",
-      selectedPack: "Pack seleccionado",
-      paymentMethodPreferred: "Metodo de pago",
-      shippingAddress: "Direccion de envio",
-      line1: "Direccion",
-      line2: "Direccion adicional",
-      city: "Ciudad",
-      region: "Provincia / Region",
-      postalCode: "Codigo postal",
-      shippingCountry: "Pais de envio",
     },
     placeholders: {
       fullName: "Tu nombre y apellidos",
       email: "tu@email.com",
-      phone: "+34 600 000 000",
-      country: "Tu pais de residencia",
-      line1: "Calle y numero",
-      line2: "Piso, puerta, referencia",
-      city: "Madrid",
-      region: "Madrid",
-      postalCode: "28001",
-      shippingCountry: "Espana",
     },
     errors: {
       fullName: "Introduce tu nombre completo.",
       email: "Introduce un email valido.",
-      phone: "Introduce un telefono valido con prefijo internacional.",
-      country: "Indica tu pais.",
       privacyConsent: "Necesitamos tu consentimiento para procesar el pedido.",
-      shippingAddress: "Completa la direccion de envio.",
       global: "Revisa los campos y vuelve a intentarlo.",
     },
-    options: getPurchaseFormOptions("es"),
   },
   thanks: {
     eyebrow: "Gracias",
-    default: {
-      title: "Gracias por tu pedido",
-      body: "Tu solicitud ya esta dentro del flujo. Este espacio queda listo para mostrar confirmacion, codigo de referencia o siguientes pasos segun el backend.",
-      cta: "Volver al inicio",
-    },
-    manualPending: {
-      title: "Pedido recibido",
-      body: "Hemos recibido tu pedido. En breve recibiras un correo con los datos de pago y la referencia necesaria para completar el pago manual y la conciliacion. Una vez confirmado el pago, tendras acceso al curso.",
-      supportPrefix: "Si tienes cualquier duda o incidencia, puedes escribirnos a",
-    },
-    stripeSuccess: {
+    success: {
       title: "Gracias por tu compra",
       body: "Tu pago se ha procesado correctamente. En breve recibiras un correo con las instrucciones para acceder a tu curso privado.",
       supportPrefix: "Si tienes cualquier duda o incidencia, puedes escribirnos a",
+      cta: "Volver al inicio",
     },
-    stripeCancel: {
+    cancel: {
       title: "Pago no completado",
       body: "No hemos podido confirmar el pago. Si quieres, puedes volver a intentarlo desde la landing.",
       cta: "Volver al inicio",

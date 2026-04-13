@@ -29,10 +29,10 @@ export default function OpenGraphImage() {
           AAINJAA x Homero Cortes
         </div>
         <div style={{ fontSize: 88, fontWeight: 800, lineHeight: 0.9, maxWidth: "80%" }}>
-          Digital percussion landing placeholder
+          AAINJAA digital masterclass
         </div>
         <div style={{ fontSize: 24, opacity: 0.8 }}>
-          Multi-language, packs, Stripe-ready, manual-payment ready
+          Launch offer, bilingual landing, direct Stripe checkout
         </div>
       </div>
     ),

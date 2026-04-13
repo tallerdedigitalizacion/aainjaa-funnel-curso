@@ -1,9 +1,6 @@
 import type {
   CurrencyOption,
   LanguageOption,
-  PaymentMethod,
-  PreferredLanguageOption,
-  SelectedPack,
 } from "@/types/purchase";
 
 export interface NavLink {
@@ -48,20 +45,6 @@ export interface HighlightItem {
   eyebrow: string;
 }
 
-export interface PackContent {
-  id: SelectedPack;
-  name: string;
-  defaultCurrency: CurrencyOption;
-  prices: Partial<Record<CurrencyOption, number>>;
-  badge?: string;
-  recommended?: boolean;
-  shippingRequired?: boolean;
-  ctaLabel: string;
-  summary: string;
-  features: string[];
-  paymentLinks: Partial<Record<PaymentMethod, string>>;
-}
-
 export interface AuthorityStat {
   label: string;
   value: string;
@@ -78,18 +61,11 @@ export interface FormCopy {
   submitLabel: string;
   submittingLabel: string;
   errorTitle: string;
+  checkoutNote: string;
   privacyLabel: string;
-  manualInfoLabel: string;
-  stripeInfoLabel: string;
-  stripeHelperLabel: string;
-  manualHelperLabel: string;
   labels: Record<string, string>;
   placeholders: Record<string, string>;
   errors: Record<string, string>;
-  options: {
-    languages: Array<{ value: PreferredLanguageOption; label: string }>;
-    currencies: Array<{ value: CurrencyOption; label: string }>;
-  };
 }
 
 export interface FooterContent {
@@ -137,10 +113,10 @@ export interface MessageBundle {
     intro: string;
     items: HighlightItem[];
   };
-  packs: {
+  offer: {
     title: string;
     intro: string;
-    guarantee: string;
+    supportLine: string;
   };
   authority: {
     title: string;
@@ -157,22 +133,13 @@ export interface MessageBundle {
   form: FormCopy;
   thanks: {
     eyebrow: string;
-    default: {
+    success: {
       title: string;
       body: string;
+      supportPrefix: string;
       cta: string;
     };
-    manualPending: {
-      title: string;
-      body: string;
-      supportPrefix: string;
-    };
-    stripeSuccess: {
-      title: string;
-      body: string;
-      supportPrefix: string;
-    };
-    stripeCancel: {
+    cancel: {
       title: string;
       body: string;
       cta: string;

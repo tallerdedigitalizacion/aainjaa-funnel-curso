@@ -1,4 +1,3 @@
-import { getPurchaseFormOptions } from "@/config/purchase-options";
 import type { MessageBundle } from "@/types/content";
 
 export const enMessages: MessageBundle = {
@@ -8,16 +7,16 @@ export const enMessages: MessageBundle = {
   meta: {
     title: "AAINJAA | Stage-driven percussion with Homero Cortes",
     description:
-      "Bilingual landing page for selling an AAINJAA digital percussion product with configurable packs, embedded form, and Stripe or manual payment flows.",
+      "Bilingual landing page to validate an AAINJAA digital percussion masterclass with one clear offer and direct Stripe checkout.",
     siteName: "AAINJAA",
     ogTitle: "AAINJAA | Digital percussion product",
     ogDescription:
-      "Learn a stage-ready percussion arrangement with clear resources, configurable packs, and private digital access.",
+      "Join a digital percussion masterclass with a launch offer and direct Stripe checkout.",
   },
   nav: [
     { label: "Value", href: "#promise" },
     { label: "Includes", href: "#includes" },
-    { label: "Packs", href: "#packs" },
+    { label: "Offer", href: "#offer" },
     { label: "FAQ", href: "#faq" },
     { label: "Order", href: "#order" },
   ],
@@ -25,17 +24,16 @@ export const enMessages: MessageBundle = {
     eyebrow: "AAINJAA x Homero Cortes",
     title: "Percussion with stage energy, sharp structure, and real pulse.",
     subtitle:
-      "A conversion-focused landing page for a digital product that blends live-performance energy, guided learning, and a checkout-ready flow.",
-    primaryCta: { label: "Choose your pack", href: "#packs", event: "cta_primary_click" },
-    secondaryCta: { label: "Watch highlights", href: "#highlights", event: "cta_secondary_click" },
+      "A direct market-test page built around one digital masterclass, one launch offer, and a clean Stripe-first checkout flow.",
+    primaryCta: { label: "Get access now", href: "#order", event: "cta_primary_click" },
     teaserLabel: "Main teaser",
     teaserTitle: "Ready space for a video, visual teaser, or campaign collage",
     teaserCopy:
       "Replace this block with a clip, thumbnail, or editorial montage once the final creative assets are ready.",
     stats: [
-      { label: "Format", value: "Digital + scalable" },
+      { label: "Format", value: "Digital masterclass" },
       { label: "Languages", value: "ES / EN" },
-      { label: "Payments", value: "Stripe or manual" },
+      { label: "Offer", value: "20% launch · 7 days" },
     ],
   },
   promise: {
@@ -118,10 +116,10 @@ export const enMessages: MessageBundle = {
       },
     ],
   },
-  packs: {
-    title: "Choose the pack that matches your moment",
-    intro: "Three configurable packs, one recommended option, and a structure ready for Stripe or manual flow.",
-    guarantee: "Digital access is enabled after payment is verified. If physical material exists, it is confirmed based on availability.",
+  offer: {
+    title: "One focused offer to validate real demand",
+    intro: "One product, one visible price, and one clear decision: submit the order and finish the payment in Stripe.",
+    supportLine: "Purchase flow",
   },
   authority: {
     title: "About Homero and AAINJAA",
@@ -143,11 +141,11 @@ export const enMessages: MessageBundle = {
     items: [
       {
         question: "When do I get access?",
-        answer: "After payment is validated, the backend can approve access and send instructions or unlock the private area.",
+        answer: "After the Stripe payment is completed, you will receive an email with the instructions to access the course.",
       },
       {
         question: "Which language is the product in?",
-        answer: "The site works in Spanish and English. Product language can be defined by pack or by the backend response.",
+        answer: "The landing is available in Spanish and English. Access and follow-up communication can be adapted from the locale you use to purchase.",
       },
       {
         question: "Do I need prior experience?",
@@ -155,91 +153,46 @@ export const enMessages: MessageBundle = {
       },
       {
         question: "Can I pay with Stripe?",
-        answer: "Yes. The form is prepared to redirect to checkout or a payment link when the backend or config says so.",
+        answer: "Yes. Submitting the form creates the order and immediately redirects you to Stripe Checkout to finish the payment.",
       },
       {
-        question: "Is manual payment available?",
-        answer: "Yes. The backend response can return manual payment instructions plus a reference code.",
-      },
-      {
-        question: "Does the product include physical material?",
-        answer: "Only if the selected pack requires it. In that case shipping fields appear and availability messaging can be shown.",
-      },
-      {
-        question: "How long does delivery take?",
-        answer: "Digital access is usually fast after validation. If physical material is included, timelines are indicative and may vary due to logistics or customs.",
+        question: "How long does the offer last?",
+        answer: "The launch offer runs for the first 7 days and applies a 20% discount to the base price.",
       },
     ],
   },
   form: {
-    title: "Place your order",
-    subtitle: "Embedded form with validation, ready for your own backend, Lambda, or API.",
-    submitLabel: "Send order",
+    title: "Reserve your access",
+    subtitle: "Leave your name and email. When you submit the order, we will take you directly to Stripe to complete the purchase.",
+    submitLabel: "Go to Stripe Checkout",
     submittingLabel: "Sending...",
     errorTitle: "We could not submit the form.",
+    checkoutNote: "We keep this step minimal. Payment is completed outside the landing in Stripe Checkout.",
     privacyLabel: "I have read and accept the privacy policy and the processing of my data to manage this order.",
-    manualInfoLabel: "Manual payment preference",
-    stripeInfoLabel: "Stripe payment preference",
-    stripeHelperLabel: "Automatic card payment",
-    manualHelperLabel: "Transfer or manual handling",
     labels: {
       fullName: "Full name",
       email: "Email",
-      phone: "Phone optional",
-      country: "Country",
-      language: "Preferred language",
-      currency: "Payment currency",
-      selectedPack: "Selected pack",
-      paymentMethodPreferred: "Payment method",
-      shippingAddress: "Shipping address",
-      line1: "Address",
-      line2: "Additional address",
-      city: "City",
-      region: "State / region",
-      postalCode: "Postal code",
-      shippingCountry: "Shipping country",
     },
     placeholders: {
       fullName: "Your full name",
       email: "you@email.com",
-      phone: "+1 555 000 000",
-      country: "Your country of residence",
-      line1: "Street and number",
-      line2: "Apt, suite, reference",
-      city: "New York",
-      region: "NY",
-      postalCode: "10001",
-      shippingCountry: "United States",
     },
     errors: {
       fullName: "Please enter your full name.",
       email: "Please enter a valid email.",
-      phone: "Please enter a valid international phone number.",
-      country: "Please enter your country.",
       privacyConsent: "We need your consent to process the order.",
-      shippingAddress: "Please complete the shipping address.",
       global: "Please review the form and try again.",
     },
-    options: getPurchaseFormOptions("en"),
   },
   thanks: {
     eyebrow: "Thank you",
-    default: {
-      title: "Thank you for your order",
-      body: "Your request is now inside the flow. This space is ready to show confirmation, a reference code, or next steps depending on the backend.",
-      cta: "Back to home",
-    },
-    manualPending: {
-      title: "Order received",
-      body: "We have received your order. You will shortly receive an email with the payment details and the reference needed to complete the manual payment and reconciliation. Once the payment is confirmed, you will receive access to the course.",
-      supportPrefix: "If you have any questions or issues, you can write to us at",
-    },
-    stripeSuccess: {
+    success: {
       title: "Thank you for your purchase",
       body: "Your payment has been processed successfully. You will shortly receive an email with the instructions to access your private course.",
       supportPrefix: "If you have any questions or issues, you can write to us at",
+      cta: "Back to home",
     },
-    stripeCancel: {
+    cancel: {
       title: "Payment not completed",
       body: "We could not confirm the payment. If you want, you can try again from the landing page.",
       cta: "Back to home",

@@ -2,7 +2,11 @@
 
 import { OrderForm } from "@/components/order-form";
 import { SectionShell } from "@/components/ui/section-shell";
-import { formatPackPrice, getLocalizedPacks, getPackPrice } from "@/config/packs";
+import {
+  formatOfferPrice,
+  getDiscountedOfferPrice,
+  getLocalizedOffer,
+} from "@/config/offer";
 import { trackEvent } from "@/lib/tracking";
 import type { ReactNode } from "react";
 
@@ -15,7 +19,12 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ locale, messages }: LandingPageProps) {
-  const packs = getLocalizedPacks(locale);
+  const offer = getLocalizedOffer(locale);
+  const discountedPrice = getDiscountedOfferPrice(
+    offer.originalPrice,
+    offer.discountPercentage,
+  );
+
   return (
     <main id="main" className="overflow-hidden">
       <Hero locale={locale} messages={messages} />
@@ -112,65 +121,77 @@ export function LandingPage({ locale, messages }: LandingPageProps) {
         </div>
       </SectionShell>
 
-      <SectionShell id="packs" className="py-20 sm:py-24">
+      <SectionShell id="offer" className="py-20 sm:py-24">
         <div className="max-w-3xl">
-          <p className="text-sm uppercase tracking-[0.35em] text-red-400">Packs</p>
+          <p className="text-sm uppercase tracking-[0.35em] text-red-400">{offer.eyebrow}</p>
           <h2 className="mt-4 font-display text-5xl uppercase leading-none text-white sm:text-6xl">
-            {messages.packs.title}
+            {messages.offer.title}
           </h2>
-          <p className="mt-5 text-lg text-white/70">{messages.packs.intro}</p>
+          <p className="mt-5 text-lg text-white/70">{messages.offer.intro}</p>
         </div>
-        <div className="mt-10 grid gap-5 xl:grid-cols-3">
-          {packs.map((pack) => (
-            <article
-              key={pack.id}
-              className={`rounded-[2rem] border p-6 ${
-                pack.recommended
-                  ? "border-red-500 bg-red-500/10 shadow-[0_0_80px_rgba(220,38,38,0.18)]"
-                  : "border-white/10 bg-white/[0.03]"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  {pack.badge ? (
-                    <span className="rounded-full border border-red-400/40 bg-red-500/15 px-3 py-1 text-xs uppercase tracking-[0.24em] text-red-200">
-                      {pack.badge}
-                    </span>
-                  ) : null}
-                  <h3 className="mt-4 font-display text-4xl uppercase text-white">
-                    {pack.name}
-                  </h3>
-                </div>
-                <p className="text-right">
-                  <span className="block text-4xl font-semibold text-white">
-                    {formatPackPrice(pack, pack.defaultCurrency, locale)}
-                  </span>
-                  <span className="text-sm uppercase tracking-[0.22em] text-white/60">
-                    {getPackPrice(pack, pack.defaultCurrency).currency}
-                  </span>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <article className="rounded-[2.5rem] border border-red-500/35 bg-[radial-gradient(circle_at_top_left,_rgba(239,68,68,0.2),_transparent_38%),linear-gradient(160deg,rgba(30,30,30,0.95),rgba(6,6,6,0.98))] p-6 sm:p-8">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="rounded-full border border-red-400/35 bg-red-500/15 px-4 py-1 text-xs uppercase tracking-[0.24em] text-red-100">
+                {offer.launchBadge}
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-1 text-xs uppercase tracking-[0.24em] text-white/70">
+                {offer.discountBadge}
+              </span>
+            </div>
+            <h3 className="mt-6 font-display text-5xl uppercase leading-none text-white sm:text-6xl">
+              {offer.name}
+            </h3>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/72">
+              {offer.summary}
+            </p>
+            <div className="mt-8 flex flex-wrap items-end gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.24em] text-white/45">Antes</p>
+                <p className="mt-2 text-2xl font-medium text-white/35 line-through">
+                  {formatOfferPrice(offer.originalPrice, offer.currency, locale)}
                 </p>
               </div>
-              <p className="mt-5 text-sm leading-6 text-white/70">{pack.summary}</p>
-              <ul className="mt-6 grid gap-3 text-sm text-white/80">
-                {pack.features.map((feature) => (
-                  <li key={feature} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="#order"
-                className="mt-8 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-neutral-950 transition hover:bg-red-500 hover:text-white"
-                onClick={() =>
-                  trackEvent({ event: "pack_cta_click", locale, pack: pack.id })
-                }
-              >
-                {pack.ctaLabel}
-              </a>
-            </article>
-          ))}
+              <div>
+                <p className="text-xs uppercase tracking-[0.24em] text-red-200">Ahora</p>
+                <p className="mt-2 font-display text-6xl uppercase leading-none text-white">
+                  {formatOfferPrice(discountedPrice, offer.currency, locale)}
+                </p>
+              </div>
+            </div>
+            <ul className="mt-8 grid gap-3 text-sm text-white/80">
+              {offer.highlights.map((feature) => (
+                <li
+                  key={feature}
+                  className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3"
+                >
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <TrackedAnchor
+              href="#order"
+              event="offer_cta_click"
+              locale={locale}
+              className="mt-8 inline-flex rounded-full bg-white px-6 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-neutral-950 transition hover:bg-red-500 hover:text-white"
+            >
+              {offer.ctaLabel}
+            </TrackedAnchor>
+          </article>
+
+          <aside className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-sm uppercase tracking-[0.24em] text-red-300">
+              {offer.title}
+            </p>
+            <p className="mt-4 text-base leading-7 text-white/72">{offer.intro}</p>
+            <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-black/30 p-5">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/45">
+                {messages.offer.supportLine}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-white/72">{offer.checkoutNote}</p>
+            </div>
+          </aside>
         </div>
-        <p className="mt-6 text-sm text-white/55">{messages.packs.guarantee}</p>
       </SectionShell>
 
       <SectionShell id="authority" className="py-20 sm:py-24">
@@ -246,9 +267,9 @@ export function LandingPage({ locale, messages }: LandingPageProps) {
                 Backend notes
               </p>
               <ul className="mt-4 grid gap-3 text-sm leading-6 text-white/70">
-                <li>Lambda/API should validate `formKey`, honeypot, consent, and pack logic.</li>
-                <li>Stripe flow can return `redirectUrl` or use pack-level payment links.</li>
-                <li>Manual flow can return `requestCode` plus `paymentInstructions`.</li>
+                <li>Lambda/API should validate `formKey`, honeypot, consent, and the single product id.</li>
+                <li>The backend should create the order and return a Stripe Checkout URL.</li>
+                <li>After payment, Stripe should redirect back to `/gracias?status=success` or `/gracias?status=cancel`.</li>
               </ul>
             </div>
           </div>
@@ -289,16 +310,6 @@ function Hero({
             >
               {messages.hero.primaryCta.label}
             </TrackedAnchor>
-            {messages.hero.secondaryCta ? (
-              <TrackedAnchor
-                href={messages.hero.secondaryCta.href}
-                event={messages.hero.secondaryCta.event}
-                locale={locale}
-                className="inline-flex rounded-full border border-white/15 px-7 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-white transition hover:border-white/40"
-              >
-                {messages.hero.secondaryCta.label}
-              </TrackedAnchor>
-            ) : null}
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {messages.hero.stats.map((item) => (

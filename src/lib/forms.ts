@@ -9,20 +9,10 @@ export async function submitPurchaseRequest(
 ): Promise<PurchaseFlowResponse> {
   if (!formConfig.apiUrl) {
     const requestCode = `AAI-${Date.now().toString().slice(-6)}`;
-    if (payload.paymentMethodPreferred === "manual") {
-      return {
-        ok: true,
-        flow: "manual",
-        requestCode,
-        redirectUrl: `/${payload.locale}/gracias?payment=manual&status=pending`,
-      };
-    }
-
     return {
       ok: true,
-      flow: "stripe",
       requestCode,
-      checkoutUrl: `/${payload.locale}/gracias?payment=stripe&status=success`,
+      checkoutUrl: `/${payload.locale}/gracias?status=success`,
     };
   }
 
